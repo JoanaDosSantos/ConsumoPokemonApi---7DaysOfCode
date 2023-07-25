@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using System.Text.Json;
 
-namespace Program.cs // Note: actual namespace depends on the project name.
+namespace Program.cs
 {
     class Program
     {
@@ -9,8 +9,6 @@ namespace Program.cs // Note: actual namespace depends on the project name.
         {
             string nomePessoa = Apresentacao();
             Menu(nomePessoa);
-            //Console.WriteLine(nomePessoa);
-            //InvocarGet();
         }
 
         #region class ListaPokemons
@@ -137,7 +135,6 @@ namespace Program.cs // Note: actual namespace depends on the project name.
             }
         }
 
-
         public static void InfoMascote(string nomePokemon, string nomePessoa, int numPokedex)
         {
 
@@ -229,5 +226,3 @@ namespace Program.cs // Note: actual namespace depends on the project name.
     }
 }
 
-//1 - Bulbasaur / 4 - charmander / 7 - squirtle
-//Console.WriteLine("ola");

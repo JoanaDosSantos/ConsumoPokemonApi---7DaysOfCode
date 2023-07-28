@@ -33,6 +33,7 @@ namespace ConsumoPokemonApi.Controller
                     }
                     break;
                 case 3:
+                default:
                     PokemonView.Sair();
                     break;
             }
@@ -79,6 +80,9 @@ namespace ConsumoPokemonApi.Controller
                         Menu(nomePessoa);
                     }
                     break;
+                default:
+                    PokemonView.Sair();
+                    break;
 
             }
         }
@@ -88,17 +92,28 @@ namespace ConsumoPokemonApi.Controller
             PokemonView.InfoMascote(nomePokemon);
             int.TryParse(Console.ReadLine(), out int menuPokemonSelect);
 
-            if (menuPokemonSelect == 1)
+            switch (menuPokemonSelect)
             {
-                InvocarGet(numPokedex, nomePessoa);
-            }
-            else if (menuPokemonSelect == 2)
-            {
-                AdotarPokemon(nomePessoa, nomePokemon, numPokedex);
-            }
-            else
-            {
-                EscolherMascote(nomePessoa);
+                case 1:
+                    {
+                        InvocarGet(numPokedex, nomePessoa);
+                    }
+                    break;
+                case 2:
+                    {
+                        AdotarPokemon(nomePessoa, nomePokemon, numPokedex);
+                    }
+                    break;
+                case 3:
+                    {
+                        EscolherMascote(nomePessoa);
+                    }
+                    break;
+                default:
+                    {
+                        PokemonView.Sair();
+                    }
+                    break;
             }
         }
 
@@ -145,7 +160,23 @@ namespace ConsumoPokemonApi.Controller
                 pokemonAdopted.Disposicao = 5;
                 pokemonAdopted.Limpeza = 6;
                 pokemonAdopted.DataAdocao = DateTime.Now;
+
                 PokemonView.AdotarPokemon(nomePessoa, nomePokemon, pokemonAdopted);
+                int.TryParse(Console.ReadLine(), out int menuPokemonSelect);
+
+                if (menuPokemonSelect == 1)
+                {
+                    string nomePokemon = listaPokemons.name;
+                    AdotarPokemon(nomePessoa, nomePokemon, numPokedex);
+                }
+                else if (menuPokemonSelect == 2) 
+                {
+                    PokemonView.InfosEStatusPokemon(nomePessoa, pokemonAdopted);
+                }
+                else
+                    PokemonView.Sair();
+
+
             }
             else { Console.WriteLine("Erro ao obter informações do Pokémon."); };
         }

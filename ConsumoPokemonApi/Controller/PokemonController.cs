@@ -108,7 +108,9 @@ namespace ConsumoPokemonApi.Controller
 
             if (listaPokemons != null)
             {
-                PokemonView.ExibirInformacoesPokemon(listaPokemons);
+                MapperInfosPokemon(listaPokemons.name, numPokedex, 1, 1);
+                Console.WriteLine("\r\nE agora, o que deseja?");
+                Console.WriteLine($"1 - Adotar o {listaPokemons.name}\r\n2 - Voltar");
                 int.TryParse(Console.ReadLine(), out int menuPokemonSelect);
 
                 if (menuPokemonSelect == 1)
@@ -131,23 +133,62 @@ namespace ConsumoPokemonApi.Controller
 
         public static void AdotarPokemon(string nomePessoa, string nomePokemon, int numPokedex)
         {
+            Console.WriteLine($"Parabéns {nomePessoa}! Seu {nomePokemon} foi escolhido!\r\nVamos dar uma olhada nos atributos do seu {nomePokemon}?");
+            MapperInfosPokemon(nomePokemon, numPokedex, 1, 1);
+            MenuPokemonAdotado(nomePokemon, numPokedex);
+        }
 
+        public static void MapperInfosPokemon(string nomePokemon, int numPokedex, int fome, int sono)
+        {
             InfoPokemon? listaPokemons = PokemonService.ObterInfoPokemon(numPokedex);
             if (listaPokemons != null)
             {
                 PokemonAdopted pokemonAdopted = new PokemonAdopted();
-                pokemonAdopted.PokemonInfo = new InfoPokemon();
-                pokemonAdopted.PokemonInfo.name = listaPokemons.name;
-                pokemonAdopted.PokemonInfo.id = listaPokemons.id;
-                pokemonAdopted.PokemonInfo.height = listaPokemons.height;
-                pokemonAdopted.Satisfeito = 4;
-                pokemonAdopted.Humor = 3;
-                pokemonAdopted.Disposicao = 5;
-                pokemonAdopted.Limpeza = 6;
+                InfoPokemon pokemonInfo = new InfoPokemon();
+                pokemonInfo.name = nomePokemon;
+                pokemonInfo.id = listaPokemons.id;
+                pokemonInfo.height = listaPokemons.height;
+                pokemonInfo.types = listaPokemons.types;
+                pokemonInfo.abilities = listaPokemons.abilities;
                 pokemonAdopted.DataAdocao = DateTime.Now;
-                PokemonView.AdotarPokemon(nomePessoa, nomePokemon, pokemonAdopted);
+                pokemonAdopted.Fome = fome;
+                pokemonAdopted.Sono = sono;
+                PokemonView.ExibirInformacoesPokemon(pokemonAdopted, pokemonInfo);
+
             }
             else { Console.WriteLine("Erro ao obter informações do Pokémon."); };
+        }
+
+        public static void MenuPokemonAdotado(string nomePokemon, int numPokedex)
+        {
+            PokemonView.InfoMascoteAdotado(nomePokemon);
+            int.TryParse(Console.ReadLine(), out int menuPokemonSelect);
+
+            PokemonAdopted pokemonAdopted = new PokemonAdopted();
+            switch (menuPokemonSelect)
+            {
+                case 1:
+                    {
+                        MapperInfosPokemon(nomePokemon, numPokedex, 1, 1);
+                        MenuPokemonAdotado(nomePokemon, numPokedex);
+                    }
+                    break;
+                case 2:
+                    {
+                        pokemonAdopted.Fome++;
+                        PokemonView.ExibirFome(nomePokemon, pokemonAdopted.Fome);
+                        return;
+                    }
+                case 3:
+                    {
+                        pokemonAdopted.Sono++;
+                        PokemonView.ExibirSono(nomePokemon, pokemonAdopted.Sono);
+                        MenuPokemonAdotado(nomePokemon, numPokedex);
+                    }
+                    break;
+                default: { break; }
+
+            }
         }
     }
 }

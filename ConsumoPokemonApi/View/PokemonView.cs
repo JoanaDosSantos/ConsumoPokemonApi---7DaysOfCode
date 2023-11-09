@@ -58,47 +58,88 @@ namespace ConsumoPokemonApi.View
             Console.WriteLine($"1 - Saber mais sobre o {nomePokemon}\r\n2 - Adotar o {nomePokemon}\r\n3 - Voltar");
         }
 
-        public static void AdotarPokemon(string nomePessoa, string nomePokemon, PokemonAdopted pokemonAdopted) {
-            Console.WriteLine($"Parabéns {nomePessoa}! Seu {nomePokemon} foi escolhido!\r\nVamos dar uma olhada nos atributos do seu {nomePokemon}?");
-            Console.WriteLine($"NOME DO POKÉMON: {pokemonAdopted.PokemonInfo.name}\r\n" +
-                $"NÚMERO ID NA POKÉDEX DO POKÉMON: {pokemonAdopted.PokemonInfo.id}\r\n" +
-                $"PESO DO POKÉMON: {pokemonAdopted.PokemonInfo.height}\r\n" +
-                $"DATA DE ADOÇÃO DO POKÉMON: {pokemonAdopted.DataAdocao}\r\n");
-            Console.WriteLine($"E agora você vai conhecer o sistema de habilidades e sentimentos do seu pokémon.\r\n" +
-                $"Cada um desses status tem seu valor aumentado ou diminuido\r\n" +
-                $"de acordo com as atividades que seu pokémon irá praticar!\r\n\r\n" +
-                $"O status de Satisfeito representa o nível de fome que seu Pokémon está sentindo.\r\n" +
-                $"Atualmente, seu {nomePokemon} está com NIVEL DE SATISFEITO: {pokemonAdopted.Satisfeito}\r\n" +
-                $"O status de Humor representa o nível de alegria e entusiasmo para brincar.\r\n" +
-                $"Atualmente, seu {nomePokemon} está com NIVEL DE HUMOR: {pokemonAdopted.Humor}\r\n" +
-                $"O status de Disposição representa o nível de cansaço e necessidade de sono do Pokémon.\r\n" +
-                $"Atualmente, seu {nomePokemon} está com NIVEL DE DISPOSIÇÂO: {pokemonAdopted.Disposicao}\r\n" +
-                $"E o ultimo status é o de Limpeza, que indica o quão limpo está seu Pokémon.\r\n" +
-                $"E atualmente, seu {nomePokemon} está com NIVEL DE LIMPEZA: {pokemonAdopted.Limpeza}\r\n");
+        public static void ExibirFome(string nomePokemon, int estado)
+        {
+            if(estado == 0)
+            {
+                Console.WriteLine($"Você não informou o nível de fome do seu {nomePokemon}.");
+            }
+            else if (estado <= 2)
+            {
+                Console.WriteLine($"Seu {nomePokemon} está com fome.");
+            }
+            else if (estado == 4)
+            {
+                Console.WriteLine($"Seu {nomePokemon} está com pouca fome.");
+            }
+            else
+            {
+                Console.WriteLine($"Seu {nomePokemon} está com bem alimentado.");
+            }
         }
 
-        public static void ExibirInformacoesPokemon(InfoPokemon listaPokemons)
+        public static void ExibirSono(string nomePokemon, int estado)
+        {
+            if (estado == 0)
+            {
+                Console.WriteLine($"Você não informou o nível de sono do seu {nomePokemon}.");
+            }
+            else if (estado <= 2)
+            {
+                Console.WriteLine($"Seu {nomePokemon} está sonolento.");
+            }
+            else if (estado == 4)
+            {
+                Console.WriteLine($"Seu {nomePokemon} está um pouco disposto.");
+            }
+            else
+            {
+                Console.WriteLine($"Seu {nomePokemon} está muito disposto.");
+            }
+        }
+
+        public static void ExibirInformacoesPokemon(PokemonAdopted pokemonAdopted, InfoPokemon pokemonInfo)
         {
             string tituloMenu = "---------------------- INFORMAÇÕES DESTE POKÉMON ----------------------";
             Console.WriteLine(tituloMenu);
 
-            Console.WriteLine($"NOME DO POKÉMON: {listaPokemons.name.ToUpper()}");
-            Console.WriteLine($"NÚMERO DA POKÉDEX: {listaPokemons.id}");
-            Console.WriteLine($"PESO DO POKÉMON: {listaPokemons.height}");
+            Console.WriteLine($"NOME DO POKÉMON: {pokemonInfo.name.ToUpper()}");
+            Console.WriteLine($"NÚMERO DA POKÉDEX: {pokemonInfo.id}");
+            Console.WriteLine($"PESO DO POKÉMON: {pokemonInfo.height}");
+            Console.WriteLine($"DATA DE ADOÇÃO DO POKÉMON: {pokemonAdopted.DataAdocao}");
             Console.WriteLine($"TIPO(S) DO POKÉMON:");
-            foreach (var typeItem in listaPokemons.types)
+            foreach (var typeItem in pokemonInfo.types)
             {
                 Console.WriteLine($"{typeItem.type.name.ToUpper()}");
             }
 
             Console.WriteLine("HABILIDADES DO POKÉMON:");
-            foreach (var abilityItem in listaPokemons.abilities)
+            foreach (var abilityItem in pokemonInfo.abilities)
             {
                 Console.WriteLine($"{abilityItem.ability.name.ToUpper()}");
             }
 
-            Console.WriteLine("\r\nE agora, o que deseja?");
-            Console.WriteLine($"1 - Adotar o {listaPokemons.name}\r\n2 - Voltar");
+            if (pokemonAdopted.Fome.Equals(false) || pokemonAdopted.Sono.Equals(false))
+            {
+                Console.WriteLine($"POKEMON AINDA NÃO ADOTADO.");
+            }
+            else
+            {
+                ExibirFome(pokemonInfo.name, pokemonAdopted.Fome);
+                ExibirSono(pokemonInfo.name, pokemonAdopted.Sono);
+            }
+        }
+
+        public static void InfoMascoteAdotado(string nomePokemon)
+        {
+            string tituloMenu = "---------------------- INTERAÇÕES DO SEU POKÉMON ----------------------";
+            Console.WriteLine(tituloMenu);
+
+            Console.WriteLine($"Você está com o seu {nomePokemon}! E agora, o que deseja fazer?");
+            Console.WriteLine($"1 - Saber como {nomePokemon} está\r\n" +
+                $"2 - Alimentar com o {nomePokemon}\r\n" +
+                $"3 - Brincar o {nomePokemon}\r\n" +
+                $"4 - Voltar\r\n");
         }
     }
 }
